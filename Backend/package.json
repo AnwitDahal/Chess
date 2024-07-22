@@ -1,5 +1,5 @@
 {
-  "name": "chess",
+  "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,9 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "chess.js": "^1.0.0-beta.8",
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "socket.io": "^4.7.5"
+    "@types/ws": "^8.5.11",
+    "ws": "^8.18.0"
   }
 }
