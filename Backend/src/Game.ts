@@ -87,6 +87,6 @@ export class Game {
         })
       );
     }
-    this.moveCount++;
+    this.moveCount++; //counts no. of moves
   }
 }
