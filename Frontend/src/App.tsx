@@ -6,14 +6,14 @@ import Game from "./Screens/Game";
 
 function App() {
   return (
-    <>
+    <div className="h-screen bg-slate-800 ">
       <BrowserRouter>
         <Routes >
           <Route path="/" element={<Landing/>}/>
           <Route path="/game" element={<Game/>}/>
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 
