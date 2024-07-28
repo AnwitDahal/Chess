@@ -10,8 +10,8 @@ export const GAME_OVER = "game_over";
 
 const Game = () => {
   const socket = useSocket();
-  const [board,setBoard]=useState(new Chess)
-  if (!socket) return <div>Connecting...</div>;
+  const [chess, setChess] = useState(new Chess());
+  const [board, setBoard] = useState(board.board());
   useEffect(() => {
     if (!socket) {
       return;
@@ -21,9 +21,12 @@ const Game = () => {
       console.log(message);
       switch (message.type) {
         case INIT_GAME:
+          setBoard(new Chess());
           console.log("Game initialized");
           break;
         case MOVE:
+          const move = message.payload;
+          board.move(move);
           console.log("Move made");
           break;
         case GAME_OVER:
@@ -31,7 +34,7 @@ const Game = () => {
           break;
       }
     };
-  },[socket]);
+  }, [socket]);
   return (
     <div className=" justify-center flex">
       <div className="pt-8 max-w-screen-lg w-full">
