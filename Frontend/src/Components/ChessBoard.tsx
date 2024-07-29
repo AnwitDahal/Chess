@@ -1,9 +1,75 @@
-import React from 'react'
+import { Color, PieceSymbol, Square } from "chess.js";
+import React, { useState } from "react";
+import { MOVE } from "../Screens/Game";
 
-const ChessBoard = () => {
+const ChessBoard = ({
+  chess,
+  board,
+  socket,
+  setBoard,
+}: {
+  chess: any;
+  setBoard: any;
+  board: ({
+    square: Square;
+    type: PieceSymbol;
+    color: Color;
+  } | null)[][];
+  socket: WebSocket;
+}) => {
+  const [from, setFrom] = useState<null | Square>(null);
   return (
-    <div className=''>ChessBoard</div>
-  )
-}
+    <div className="">
+      {board.map((row, i) => {
+        return (
+          <div key={i} className="flex">
+            {row.map((square, j) => {
+              const squareRepresentation = (String.fromCharCode(97 + (j % 8)) +
+                "" +
+                (8 - i)) as Square;
+              return (
+                <div
+                  onClick={() => {
+                    if (!from) {
+                      setFrom(squareRepresentation);
+                    } else {
+                      socket.send(
+                        JSON.stringify({
+                          type: MOVE,
+                          payload: {
+                            move: {
+                              from,
+                              to: squareRepresentation,
+                            },
+                          },
+                        })
+                      );
+                      setFrom(null);
+                      chess.move({
+                        from,
+                        to: squareRepresentation,
+                      });
+                      setBoard(chess.board());
+                    }
+                  }}
+                  key={j}
+                  className={`w-16 h-16 ${
+                    (i + j) % 2 === 0 ? "bg-green-700" : "bg-white"
+                  }`}
+                >
+                  <div className="flex justify-center w-full h-full">
+                    <div className="h-full flex justify-center flex-col">
+                      {square ? square.type : ""}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
-export default ChessBoard
+export default ChessBoard;
