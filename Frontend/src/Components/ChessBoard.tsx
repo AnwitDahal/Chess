@@ -59,7 +59,8 @@ const ChessBoard = ({
                 >
                   <div className="flex justify-center w-full h-full">
                     <div className="h-full flex justify-center flex-col">
-                      {square ? square.type : ""}
+                      {/* {square ? square.type : ""} */}
+                      {square ? <img className="" src={`/${square?.color==="b"? square.type : `${square?.type?.toUpperCase()} copy`}.svg`}/>:null}
                     </div>
                   </div>
                 </div>
