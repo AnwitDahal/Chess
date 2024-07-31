@@ -54,7 +54,7 @@ const ChessBoard = ({
                   }}
                   key={j}
                   className={`w-16 h-16 ${
-                    (i + j) % 2 === 0 ? "bg-green-700" : "bg-white"
+                    (i + j) % 2 === 0 ? "bg-white" : "bg-green-700"
                   }`}
                 >
                   <div className="flex justify-center w-full h-full">
