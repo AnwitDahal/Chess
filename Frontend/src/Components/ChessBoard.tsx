@@ -18,7 +18,6 @@ const ChessBoard = ({
   socket: WebSocket;
 }) => {
   const [from, setFrom] = useState<null | Square>(null);
-  
   const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const numbers = [8, 7, 6, 5, 4, 3, 2, 1];
 
@@ -36,9 +35,16 @@ const ChessBoard = ({
           return (
             <div key={i} className="flex">
               {row.map((square, j) => {
-                const squareRepresentation = (String.fromCharCode(97 + (j % 8)) +
+                const squareRepresentation = (String.fromCharCode(
+                  97 + (j % 8)
+                ) +
                   "" +
                   (8 - i)) as Square;
+
+                const isWhiteSquare = (i + j) % 2 === 0;
+                const isSelectedSquare = from === squareRepresentation;
+                const hasPiece = !!square;
+
                 return (
                   <div
                     onClick={() => {
@@ -66,9 +72,16 @@ const ChessBoard = ({
                     }}
                     key={j}
                     className={`w-16 h-16 ${
-                      (i + j) % 2 === 0 ? "bg-white" : "bg-green-700"
+                      isWhiteSquare && hasPiece && isSelectedSquare
+                        ? "bg-gray-400"
+                        : hasPiece && isSelectedSquare
+                        ? "bg-green-900"
+                        : isWhiteSquare
+                        ? "bg-white"
+                        : "bg-green-700"
                     }`}
                   >
+                    {/* className={`w-16 h-16 ${ isWhiteSquare && hasPiece && isSelectedSquare? "bg-gray-400": isWhiteSquare? "bg-white": "bg-green-700"}`}> */}{" "}
                     <div className="flex justify-center w-full h-full">
                       <div className="h-full flex justify-center flex-col">
                         {square ? (
@@ -91,7 +104,10 @@ const ChessBoard = ({
         })}
         <div className="flex">
           {letters.map((letter, i) => (
-            <div key={i} className="w-16 h-8 flex items-center justify-center text-white">
+            <div
+              key={i}
+              className="w-16 h-8 flex items-center justify-center text-white"
+            >
               {letter}
             </div>
           ))}
