@@ -18,6 +18,7 @@ const ChessBoard = ({
   socket: WebSocket;
 }) => {
   const [from, setFrom] = useState<null | Square>(null);
+  const [legalMoves, setLegalMoves] = useState<Square[]>([]);
   const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const numbers = [8, 7, 6, 5, 4, 3, 2, 1];
 
@@ -44,12 +45,19 @@ const ChessBoard = ({
                 const isWhiteSquare = (i + j) % 2 === 0;
                 const isSelectedSquare = from === squareRepresentation;
                 const hasPiece = !!square;
+                const isLegalMove = legalMoves.includes(squareRepresentation);
 
                 return (
                   <div
                     onClick={() => {
                       if (!from) {
                         setFrom(squareRepresentation);
+                        const moves = chess.moves({
+                          square: squareRepresentation,
+                          verbose: true,
+                        });
+                        const legalSquares = moves.map((move) => move.to);
+                        setLegalMoves(legalSquares);
                       } else {
                         socket.send(
                           JSON.stringify({
@@ -63,6 +71,7 @@ const ChessBoard = ({
                           })
                         );
                         setFrom(null);
+                        setLegalMoves([]);
                         chess.move({
                           from,
                           to: squareRepresentation,
@@ -79,9 +88,8 @@ const ChessBoard = ({
                         : isWhiteSquare
                         ? "bg-white"
                         : "bg-green-700"
-                    }`}
+                    } ${isLegalMove ? "border-4 border-yellow-500" : ""}`}
                   >
-                    {/* className={`w-16 h-16 ${ isWhiteSquare && hasPiece && isSelectedSquare? "bg-gray-400": isWhiteSquare? "bg-white": "bg-green-700"}`}> */}{" "}
                     <div className="flex justify-center w-full h-full">
                       <div className="h-full flex justify-center flex-col">
                         {square ? (
