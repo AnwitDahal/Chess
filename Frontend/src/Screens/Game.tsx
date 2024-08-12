@@ -37,7 +37,7 @@ const Game = () => {
       }
     };
   }, [socket]);
-  if (!socket) return <div>Connecting....</div>;
+  if (!socket) return <div className="text-white">Connecting....</div>;
   return (
     <div className=" justify-center flex">
       <div className="pt-8 max-w-screen-lg w-full">
